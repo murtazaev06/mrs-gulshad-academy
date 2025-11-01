@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mrs Gulshad Academy - English Courses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box; font-family:'Roboto',sans-serif;}
+    body {background:#f9f9f9; color:#333; line-height:1.6;}
+    a {text-decoration:none; color:inherit;}
+
+    /* Navbar */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(13,59,102,0.9);
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: padding 0.3s, background 0.3s, box-shadow 0.3s;
+    }
+    header.shrink {padding: 8px 40px; background: #0D3B66; box-shadow: 0 6px 15px rgba(0,0,0,0.15);}
+    header h1 {font-family:'Playfair Display', serif; font-size:24px;}
+    nav {display:flex;}
+    nav a {margin-left:25px; font-weight:bold; transition: color 0.3s;}
+    nav a:hover, nav a.active {color:#F95738;}
+
+    /* Burger menu */
+    .burger {display:none; flex-direction: column; justify-content: space-between; width: 25px; height: 20px; cursor: pointer; z-index: 1100;}
+    .burger div {height: 3px; background: white; border-radius: 2px; transition: all 0.3s;}
+
+    nav.mobile-active {display:flex; flex-direction: column; position:absolute; top:100%; left:0; width:100%; background:#0D3B66;}
+    nav.mobile-active a {margin:15px 0; text-align:center;}
+
+    /* Hero */
+    .hero {display:flex; align-items:center; justify-content:space-between; padding:120px 50px 100px; background:linear-gradient(rgba(13,59,102,0.7), rgba(13,59,102,0.7)), url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover; color:white;}
+    .hero-text {max-width:600px;}
+    .hero-text h2, .hero-text p, .hero-text a {opacity:0; transform: translateY(30px); transition: all 0.8s ease-out;}
+    .hero-text.show h2 {opacity:1; transform:translateY(0);}
+    .hero-text.show p {opacity:1; transform:translateY(0); transition-delay:0.2s;}
+    .hero-text.show a {opacity:1; transform:translateY(0); transition-delay:0.4s;}
+    .hero-text h2 {font-size:48px; margin-bottom:20px;}
+    .hero-text p {font-size:20px; margin-bottom:30px;}
+    .hero-text a {background:#F95738; color:white; padding:15px 30px; border-radius:8px; font-weight:bold; transition: transform 0.3s, background 0.3s;}
+    .hero-text a:hover {background:#FF6F3C; transform: scale(1.05);}
+
+    /* Why Us */
+    .why-us {padding:80px 50px; background:#EDEDED; text-align:center;}
+    .why-us h2 {font-family:'Playfair Display', serif; font-size:36px; margin-bottom:50px;}
+    .cards {display:flex; flex-wrap:wrap; justify-content:space-around; gap:30px;}
+    .card {background:#fff; border-radius:12px; padding:30px 20px; flex:1 1 250px; box-shadow:0 8px 20px rgba(0,0,0,0.1); opacity:0; transform: translateY(50px) scale(0.95); transition: transform 0.7s ease-out, opacity 0.7s ease-out;}
+    .card.show {opacity:1; transform:translateY(0) scale(1);}
+    .card:hover {transform: translateY(-10px) scale(1.05); transition: transform 0.4s cubic-bezier(0.25,1.25,0.5,1);}
+    .card img {width:60px; margin-bottom:20px;}
+    .card h3 {font-size:22px; margin-bottom:10px;}
+    .card p {font-size:16px; color:#555;}
+
+    /* Courses */
+    .courses {padding:80px 50px; background:#fff;}
+    .courses h2 {text-align:center; font-family:'Playfair Display', serif; font-size:36px; margin-bottom:50px;}
+    .course-list {display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:30px;}
+    .course-card {background:#f1f1f1; border-radius:12px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.1); opacity:0; transform: translateY(50px) scale(0.95); transition: transform 0.7s ease-out, opacity 0.7s ease-out;}
+    .course-card.show {opacity:1; transform: translateY(0) scale(1);}
+    .course-card:hover {transform: translateY(-10px) scale(1.05);}
+    .course-card .content {padding:20px;}
+    .course-card .content h3 {font-size:24px; margin-bottom:10px;}
+    .course-card .content p {font-size:16px; margin-bottom:15px;}
+    .course-card .content a {background:#0D3B66; color:white; padding:10px 20px; border-radius:6px; font-weight:bold; transition: transform 0.3s, background 0.3s;}
+    .course-card .content a:hover {background:#F95738; transform: scale(1.05);}
+
+    /* Schedule */
+    .schedule {
+  padding: 100px 50px;
+  background: #EDEDED;
+  text-align: center;
+}
+.schedule h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  margin-bottom: 60px;
+  color: #0D3B66;
+}
+.schedule-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 25px;
+  justify-items: center;
+}
+
+.day {
+  background: linear-gradient(135deg, #ffffff, #f3f6fa);
+  border-radius: 20px;
+  padding: 25px 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  transition: transform 0.7s ease-out, opacity 0.7s ease-out, box-shadow 0.4s, background 0.4s;
+  font-size: 16px;
+  width: 200px;
+}
+.day.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.day:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 15px 30px rgba(13, 59, 102, 0.25);
+  background: linear-gradient(135deg, #ffffff, #e9f1fa);
+}
+.day h3 {
+  background: #0D3B66;
+  color: white;
+  padding: 10px 0;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.slot {
+  background: #F95738;
+  color: white;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-block;
+  width: 90%;
+  transition: transform 0.3s, background 0.3s;
+}
+.slot:hover {
+  background: #FF6F3C;
+  transform: translateY(-3px);
+}
+
+    /* Testimonials */
+    .testimonials {padding:80px 50px; background:#fff;}
+    .testimonials h2 {text-align:center; font-family:'Playfair Display', serif; font-size:36px; margin-bottom:50px;}
+    .testimonial-list {display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:30px;}
+    .testimonial-card {background:#f1f1f1; padding:20px; border-radius:12px; box-shadow:0 6px 15px rgba(0,0,0,0.1); opacity:0; transform: translateY(50px) scale(0.95); transition: transform 0.7s ease-out, opacity 0.7s ease-out;}
+    .testimonial-card.show {opacity:1; transform: translateY(0) scale(1);}
+    .testimonial-card:hover {transform: translateY(-10px) scale(1.05);}
+    .testimonial-card p {font-style:italic; margin-bottom:15px;}
+    .testimonial-card h4 {font-weight:bold; color:#0D3B66;}
+
+    /* CTA */
+    .cta {padding:80px 50px; background:#0D3B66; color:white; text-align:center;}
+    .cta h2 {font-size:36px; margin-bottom:20px;}
+    .cta a {background:#F95738; color:white; padding:15px 30px; border-radius:8px; font-weight:bold; transition: transform 0.3s, background 0.3s;}
+    .cta a:hover {background:#FF6F3C; transform: scale(1.05);}
+
+    /* Footer */
+    footer {background:#0D3B66; color:white; text-align:center; padding:50px;}
+    footer a {color:#F95738; font-weight:bold;}
+    footer form {margin-top:20px;}
+    footer input, footer textarea {padding:10px; width:80%; max-width:400px; margin-bottom:10px; border-radius:6px; border:none;}
+    footer button {padding:10px 20px; background:#F95738; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer; transition: transform 0.3s, background 0.3s;}
+    footer button:hover {background:#FF6F3C; transform: scale(1.05);}
+
+    #form-notification {position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #F95738; color: white; padding: 15px 25px; border-radius: 10px; font-weight: bold; opacity: 0; pointer-events: none; transition: opacity 0.5s, transform 0.5s; z-index: 10000;}
+    #form-notification.show {opacity: 1; transform: translateX(-50%) translateY(0);}
+
+    /* Мобильные стили */
+    @media (max-width:768px){
+      nav {display:none;}
+      .burger {display:flex;}
+      .hero {flex-direction: column; text-align: center; padding:100px 20px 60px;}
+      .hero-text h2{font-size:32px;}
+      .hero-text p{font-size:18px;}
+      .cards{flex-direction: column; gap:20px;}
+      .course-list{grid-template-columns:1fr;}
+      .testimonial-list{grid-template-columns:1fr;}
+      .schedule-table{grid-template-columns:repeat(auto-fit, minmax(120px,1fr)); gap:10px;}
+      .day{font-size:12px; padding:10px;}
+      .day h3{font-size:14px;}
+      .slot{font-size:10px; padding:3px 4px;}
+      @media (max-width:768px){
+  nav {display:none;}
+  .burger {display:flex;}
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding:100px 20px 60px;
+  }
+  .hero-text h2 {font-size:32px;}
+  .hero-text p {font-size:18px;}
+  .cards {flex-direction: column; gap:20px;}
+  .course-list {grid-template-columns:1fr;}
+  .testimonial-list {grid-template-columns:1fr;}
+
+  /* Schedule mobile layout — 3 on top, 2 centered below */
+  .schedule-table {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-items: center;
+  }
+
+  /* Каждая карточка */
+  .day {
+    width: 100%;
+    max-width: 200px;
+    padding: 20px 10px;
+    font-size: 13px;
+  }
+  .day h3 {
+    font-size: 15px;
+    padding: 8px 0;
+  }
+  .slot {
+    font-size: 12px;
+    padding: 6px 5px;
+    height: auto;
+    white-space: nowrap;
+  }
+
+  /* Центровка нижнего ряда */
+  .schedule-table .day:nth-child(4),
+  .schedule-table .day:nth-child(5) {
+    grid-column: span 1;
+  }
+
+  .schedule-table::after {
+    content: "";
+    grid-column: 1 / -1;
+    display: block;
+    justify-self: center;
+  }
+
+  /* Центрирование 4-й и 5-й карточки */
+  .schedule-table .day:nth-child(4) {
+    grid-column-start: 1; /* сдвигает четвертую карточку немного вправо */
+  }
+
+  /* На очень узких экранах — 2×3 */
+  @media (max-width:480px){
+    .schedule-table {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .day {
+      max-width: 170px;
+    }
+    .schedule-table .day:nth-child(4) {
+      grid-column-start: auto;
+    }
+  }
+}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <h1>Mrs Gulshad Academy</h1>
+    <div class="burger" id="burger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <nav id="nav-links">
+      <a href="#why-us">Why Us</a>
+      <a href="#courses">Courses</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#cta">Enroll</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Master English with Mrs Gulshad Academy</h2>
+      <p>Learn English effectively with certified courses, expert teachers, and proven results.</p>
+      <a href="#cta">Join Now</a>
+    </div>
+  </section>
+
+  <!-- Why Us -->
+  <section class="why-us" id="why-us">
+    <h2>Why Choose Us?</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="https://img.icons8.com/ios-filled/100/0D3B66/graduation-cap.png" alt="Certified">
+        <h3>Certified Courses</h3>
+        <p>Receive internationally recognized certificates after completing each course.</p>
+      </div>
+      <div class="card">
+        <img src="https://img.icons8.com/ios-filled/100/0D3B66/worldwide-location.png" alt="Global">
+        <h3>Global Access</h3>
+        <p>Study from anywhere in the world with our online platform.</p>
+      </div>
+      <div class="card">
+        <img src="https://img.icons8.com/ios-filled/100/0D3B66/time-machine.png" alt="Flexible">
+        <h3>Flexible Schedule</h3>
+        <p>Learn at your own pace with lifetime access to course materials.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses -->
+  <section class="courses" id="courses">
+    <h2>Our Courses</h2>
+    <div class="course-list">
+      <div class="course-card">
+        <div class="content">
+          <h3>Beginner English</h3>
+          <p>Learn the basics of English and build a strong foundation.</p>
+          <a href="#">Enroll</a>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="content">
+          <h3>Intermediate English</h3>
+          <p>Enhance vocabulary, grammar, and communication skills.</p>
+          <a href="#">Enroll</a>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="content">
+          <h3>Advanced English</h3>
+          <p>Perfect your fluency and confidence with advanced techniques.</p>
+          <a href="#">Enroll</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schedule -->
+  <section class="schedule" id="schedule">
+    <h2>Our Course Schedule</h2>
+    <div class="schedule-table">
+      <div class="day">
+        <h3>Mon</h3>
+        <div class="slot">Beg 10–12</div>
+        <div class="slot">Adv 14–16</div>
+      </div>
+      <div class="day">
+        <h3>Tue</h3>
+        <div class="slot">Inter 11–13</div>
+        <div class="slot">Speak 15–17</div>
+      </div>
+      <div class="day">
+        <h3>Wed</h3>
+        <div class="slot">Beg 10–12</div>
+        <div class="slot">Adv 14–16</div>
+      </div>
+      <div class="day">
+        <h3>Thu</h3>
+        <div class="slot">Inter 11–13</div>
+        <div class="slot">Speak 15–17</div>
+      </div>
+      <div class="day">
+        <h3>Fri</h3>
+        <div class="slot">Beg 10–12</div>
+        <div class="slot">Adv 14–16</div>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Testimonials -->
+  <section class="testimonials" id="testimonials">
+    <h2>What Our Students Say</h2>
+    <div class="testimonial-list">
+      <div class="testimonial-card">
+        <p>"These courses transformed my English skills in just 3 months. Highly recommended!"</p>
+        <h4>- Askar</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>"The lessons are engaging, practical, and easy to follow. I feel confident speaking English now."</p>
+        <h4>- Natalya</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>"A perfect combination of grammar, conversation, and real-life English practice."</p>
+        <h4>- Shoxrux</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="cta">
+    <h2>Ready to Start Learning?</h2>
+    <a href="#contact">Enroll Now</a>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <p>© 2025 Mrs Gulshad Academy. All rights reserved.</p>
+    <p>Email us: <a href="mailto:info@mrsgulshadacademy.com">info@mrsgulshadacademy.com</a></p>
+    <form id="contact-form">
+      <input type="text" name="name" placeholder="Your Name" required><br>
+      <input type="email" name="email" placeholder="Your Email" required><br>
+      <textarea name="message" placeholder="Your Message" required></textarea><br>
+      <button type="submit">Send Message</button>
+    </form>
+    <div id="form-notification"></div>
+  </footer>
+
+  <script>
+    // Hero animation
+    const heroText = document.querySelector('.hero-text');
+    window.addEventListener('load', () => { heroText.classList.add('show'); });
+
+    // Intersection animations
+    const showElements = document.querySelectorAll('.card, .course-card, .testimonial-card, .day');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('show'); } });
+    }, {threshold:0.2});
+    showElements.forEach(el => observer.observe(el));
+
+    // Navbar shrink
+    window.addEventListener('scroll', function() { document.querySelector('header').classList.toggle('shrink', window.scrollY > 50); });
+
+    // Burger menu toggle
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('nav-links');
+    burger.addEventListener('click', () => { navLinks.classList.toggle('mobile-active'); });
+
+    // Active link highlighting
+    const sections = document.querySelectorAll('section');
+    const navItems = document.querySelectorAll('nav a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => { const sectionTop = section.offsetTop - 100; if(pageYOffset >= sectionTop) current = section.getAttribute('id'); });
+      navItems.forEach(link => { link.classList.remove('active'); if(link.getAttribute('href') === '#' + current) link.classList.add('active'); });
+    });
+
+    // Contact form submission
+    const form = document.getElementById('contact-form');
+    const notification = document.getElementById('form-notification');
+    function showNotification(message, color="#F95738") {
+      notification.textContent = message;
+      notification.style.background = color;
+      notification.classList.add('show');
+      setTimeout(()=>{notification.classList.remove('show');}, 3000);
+    }
+    form.addEventListener('submit', function(event){
+      event.preventDefault();
+      const formData = new FormData(form);
+      fetch('https://formspree.io/f/meolkvrg', {method:'POST', body:formData, headers:{'Accept':'application/json'}})
+      .then(response => {
+        if(response.ok){ showNotification("✅ Message sent successfully!","green"); form.reset(); }
+        else { response.json().then(data => { if(data.errors){ showNotification(data.errors.map(e=>e.message).join(", "), "red"); } else { showNotification("⚠️ Oops! Something went wrong.", "red"); } }); }
+      }).catch(()=>{ showNotification("⚠️ Oops! Something went wrong.", "red"); });
+    });
+  </script>
+</body>
+</html>
