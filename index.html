@@ -15,14 +15,12 @@
       position: fixed;
       top: 0;
       width: 100%;
-      background: rgba(13,59,102,0.9);
       color: white;
       padding: 15px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: padding 0.3s, background 0.3s, box-shadow 0.3s;
     }
     header.shrink {padding: 8px 40px; background: #0D3B66; box-shadow: 0 6px 15px rgba(0,0,0,0.15);}
@@ -62,82 +60,191 @@
     .card p {font-size:16px; color:#555;}
 
     /* Courses */
-    .courses {padding:80px 50px; background:#fff;}
-    .courses h2 {text-align:center; font-family:'Playfair Display', serif; font-size:36px; margin-bottom:50px;}
-    .course-list {display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:30px;}
-    .course-card {background:#f1f1f1; border-radius:12px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.1); opacity:0; transform: translateY(50px) scale(0.95); transition: transform 0.7s ease-out, opacity 0.7s ease-out;}
-    .course-card.show {opacity:1; transform: translateY(0) scale(1);}
-    .course-card:hover {transform: translateY(-10px) scale(1.05);}
-    .course-card .content {padding:20px;}
-    .course-card .content h3 {font-size:24px; margin-bottom:10px;}
-    .course-card .content p {font-size:16px; margin-bottom:15px;}
-    .course-card .content a {background:#0D3B66; color:white; padding:10px 20px; border-radius:6px; font-weight:bold; transition: transform 0.3s, background 0.3s;}
-    .course-card .content a:hover {background:#F95738; transform: scale(1.05);}
+.courses {
+  padding: 80px 50px;
+  background: #fff;
+}
 
-    /* Schedule */
-    .schedule {
-  padding: 100px 50px;
-  background: #EDEDED;
+.courses h2 {
   text-align: center;
-}
-.schedule h2 {
   font-family: 'Playfair Display', serif;
-  font-size: 38px;
-  margin-bottom: 60px;
-  color: #0D3B66;
-}
-.schedule-table {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 25px;
-  justify-items: center;
+  font-size: 36px;
+  margin-bottom: 50px;
 }
 
-.day {
-  background: linear-gradient(135deg, #ffffff, #f3f6fa);
-  border-radius: 20px;
-  padding: 25px 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+.course-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  justify-content: center;
+}
+
+.course-card {
+  background: #f1f1f1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   opacity: 0;
   transform: translateY(50px) scale(0.95);
-  transition: transform 0.7s ease-out, opacity 0.7s ease-out, box-shadow 0.4s, background 0.4s;
-  font-size: 16px;
-  width: 200px;
+  transition: transform 0.7s ease-out, opacity 0.7s ease-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 340px; /* одинаковая высота карточек */
 }
-.day.show {
+
+.course-card.show {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
-.day:hover {
-  transform: translateY(-8px) scale(1.05);
-  box-shadow: 0 15px 30px rgba(13, 59, 102, 0.25);
-  background: linear-gradient(135deg, #ffffff, #e9f1fa);
+
+.course-card:hover {
+  transform: translateY(-10px) scale(1.05);
 }
-.day h3 {
+
+.course-card .content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.course-card .content h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.course-card .content p {
+  font-size: 15px;
+  margin-bottom: auto; /* текст занимает всё свободное место */
+  color: #555;
+}
+@media (max-width: 768px) {
+  .course-card .content p:not(:first-of-type) {
+    display: none;
+  }
+
+  /* Чуть уменьшаем отступы, чтобы карточки выглядели компактно */
+  .course-card .content {
+    padding: 15px;
+  }
+
+  .course-card .content h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .course-card .content p {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .course-card .content a {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+}
+.course-card .content a {
   background: #0D3B66;
   color: white;
-  padding: 10px 0;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-.slot {
-  background: #F95738;
-  color: white;
-  padding: 8px 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  display: inline-block;
-  width: 90%;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
   transition: transform 0.3s, background 0.3s;
+  align-self: flex-start;
+  margin-top: 20px; /* расстояние сверху */
 }
-.slot:hover {
-  background: #FF6F3C;
-  transform: translateY(-3px);
+
+.course-card .content a:hover {
+  background: #F95738;
+  transform: scale(1.05);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .course-list {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 10px;
+  }
+  .course-card {
+    min-height: auto;
+  }
+}
+
+
+/* Schedule Section */
+/* Schedule Section */
+.schedule {
+  padding: 80px 50px;
+  background: #EDEDED;
+  text-align: center;
+}
+
+.schedule h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+/* Table container */
+.schedule-wrapper {
+  width: 100%;
+}
+
+/* Table styling */
+.schedule-table {
+  width: 100%;
+  table-layout: fixed; /* колонки равномерно распределены */
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  box-shadow: 0 6px 18px rgba(60, 0, 0, 0.1);
+}
+
+/* Header */
+.schedule-table thead {
+  background: #0D3B66;
+  color: #ffffff;
+}
+
+.schedule-table th,
+.schedule-table td {
+  padding: 12px 10px;
+  text-align: center;
+  border-bottom: 1px solid #eef2f7;
+  word-wrap: break-word; /* перенос текста, если мало места */
+}
+
+.schedule-table tr:nth-child(even) {
+  background: #fafcff;
+}
+.schedule-table tbody tr:hover td {
+  background: #b7cfe8; /* цвет подсветки при наведении */
+  transition: background 0.3s ease;
+}
+
+.schedule-table td:first-child {
+  font-weight: 600;
+  color: #0D3B66;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .schedule-table th,
+  .schedule-table td {
+    padding: 8px 5px;
+    font-size: 13px;
+  }
+
+  .schedule h2 {
+    font-size: 28px;
+  }
 }
 
     /* Testimonials */
@@ -195,13 +302,6 @@
   .course-list {grid-template-columns:1fr;}
   .testimonial-list {grid-template-columns:1fr;}
 
-  /* Schedule mobile layout — 3 on top, 2 centered below */
-  .schedule-table {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    justify-items: center;
-  }
 
   /* Каждая карточка */
   .day {
@@ -234,10 +334,7 @@
     justify-self: center;
   }
 
-  /* Центрирование 4-й и 5-й карточки */
-  .schedule-table .day:nth-child(4) {
-    grid-column-start: 1; /* сдвигает четвертую карточку немного вправо */
-  }
+
 
   /* На очень узких экранах — 2×3 */
   @media (max-width:480px){
@@ -310,62 +407,95 @@
   <section class="courses" id="courses">
     <h2>Our Courses</h2>
     <div class="course-list">
-      <div class="course-card">
-        <div class="content">
-          <h3>Beginner English</h3>
-          <p>Learn the basics of English and build a strong foundation.</p>
-          <a href="#">Enroll</a>
-        </div>
-      </div>
+      
       <div class="course-card">
         <div class="content">
           <h3>Intermediate English</h3>
-          <p>Enhance vocabulary, grammar, and communication skills.</p>
+          <p>   Enhance your <strong>grammar</strong>, <strong>vocabulary</strong>, and <strong>communication skills</strong> with interactive lessons designed to build confidence and fluency.</p>
+          <p>   Our experienced instructors guide you through <strong>real-life conversations</strong>, writing exercises, and pronunciation drills to help you express yourself naturally in English.</p>
+          <p>   Perfect for those who already know the basics and want to move closer to <strong>advanced fluency</strong> for work, study, or travel.</p>
           <a href="#">Enroll</a>
         </div>
       </div>
+  
       <div class="course-card">
         <div class="content">
-          <h3>Advanced English</h3>
-          <p>Perfect your fluency and confidence with advanced techniques.</p>
+          <h3>IELTS Preparation</h3>
+          <p>   Achieve your <strong>target band score</strong> with expert guidance, real exam simulations, and proven <strong>test-taking strategies</strong>.</p>
+          <p>   You’ll master all four sections — <strong>Listening</strong>, <strong>Reading</strong>, <strong>Writing</strong>, and <strong>Speaking</strong> — through practical tips, feedback, and authentic exam materials.</p>
+          <p>   This program is ideal for students aiming to <strong>study abroad</strong> or professionals looking to <strong>boost their career opportunities</strong> worldwide.</p>
           <a href="#">Enroll</a>
         </div>
       </div>
+  
+      <div class="course-card">
+        <div class="content">
+          <h3>Multilevel English</h3>
+          <p>   A flexible course designed for <strong>all levels</strong>, helping students progress naturally with <strong>personalized attention</strong> and <strong>skill-based practice</strong>.</p>
+          <p>   Each lesson adapts to your strengths and weaknesses, ensuring steady improvement in every area of English communication.</p>
+          <p>   Join a supportive environment where you can start from any level and grow at your own pace with <strong>continuous teacher feedback</strong>.</p>
+          <a href="#">Enroll</a>
+        </div>
+      </div>
+  
     </div>
   </section>
 
   <!-- Schedule -->
   <section class="schedule" id="schedule">
-    <h2>Our Course Schedule</h2>
-    <div class="schedule-table">
-      <div class="day">
-        <h3>Mon</h3>
-        <div class="slot">Beg 10–12</div>
-        <div class="slot">Adv 14–16</div>
-      </div>
-      <div class="day">
-        <h3>Tue</h3>
-        <div class="slot">Inter 11–13</div>
-        <div class="slot">Speak 15–17</div>
-      </div>
-      <div class="day">
-        <h3>Wed</h3>
-        <div class="slot">Beg 10–12</div>
-        <div class="slot">Adv 14–16</div>
-      </div>
-      <div class="day">
-        <h3>Thu</h3>
-        <div class="slot">Inter 11–13</div>
-        <div class="slot">Speak 15–17</div>
-      </div>
-      <div class="day">
-        <h3>Fri</h3>
-        <div class="slot">Beg 10–12</div>
-        <div class="slot">Adv 14–16</div>
-      </div>
+    <h2>Course Schedule</h2>
+  
+    <div class="schedule-wrapper">
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Beginner</th>
+            <th>Interm.</th>
+            <th>Advanced</th>
+            <th>Speaking</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mon</td>
+            <td>10:00  12:00</td>
+            <td>–</td>
+            <td>14:00  16:00</td>
+            <td>–</td>
+          </tr>
+          <tr>
+            <td>Tue</td>
+            <td>–</td>
+            <td>11:00  13:00</td>
+            <td>–</td>
+            <td>15:00  17:00</td>
+          </tr>
+          <tr>
+            <td>Wed</td>
+            <td>10:00  12:00</td>
+            <td>–</td>
+            <td>14:00  16:00</td>
+            <td>–</td>
+          </tr>
+          <tr>
+            <td>Thu</td>
+            <td>–</td>
+            <td>11:00  13:00</td>
+            <td>–</td>
+            <td>15:00  17:00</td>
+          </tr>
+          <tr>
+            <td>Fri</td>
+            <td>10:00  12:00</td>
+            <td>–</td>
+            <td>14:00  16:00</td>
+            <td>–</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
-  
 
   <!-- Testimonials -->
   <section class="testimonials" id="testimonials">
